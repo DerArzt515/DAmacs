@@ -1,0 +1,2 @@
+;;; Generated package description from /home/arzt/.emacs.d/elpa/swiper-20210202.2312/swiper.el  -*- no-byte-compile: t -*-
+(define-package "swiper" "20210202.2312" "Isearch with an overview. Oh, man!" '((emacs "24.5") (ivy "0.13.0")) :commit "4235010d2aaba907c7dceb48f09e5edfde1058c0" :authors '(("Oleh Krehel" . "ohwoeowho@gmail.com")) :maintainer '("Oleh Krehel" . "ohwoeowho@gmail.com") :keywords '("matching") :url "https://github.com/abo-abo/swiper")
