@@ -28,7 +28,18 @@
 
 (use-package evil
   :ensure t
-  :config (evil-mode 1))
+  :init
+  (setq evil-want-C-i-jump nil)
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-mode 1)
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line))
+
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
@@ -69,6 +80,8 @@
   :ensure t
   :init (doom-modeline-mode 1))
 
+(use-package all-the-icons)
+
 ;;ui
 (column-number-mode)
 (global-display-line-numbers-mode t)
@@ -105,8 +118,68 @@
 
 (use-package doom-themes)
 
+(use-package general
+    :config
+    (general-create-definer my/leader-keys
+	:keymaps '(normal insert visual emacs)
+	:prefix "SPC"
+	:global-prefix "C-SPC")
 
-(load-theme 'afternoon)
+    (my/leader-keys
+     "t" '(:ignore t :which-key "toggles")
+     "tt" '(counsel-load-theme :which-key "choose theme")
+     "f" '(:ignore t :which-key "files")
+     "ff" '(counsel-find-file :which-key "find file")
+     "fs" '(evil-save :which-key "save")
+     "w" '(:ignroe t :which-key "window")
+     "ws" '(evil-window-split :which-key "split -")
+     "wv" '(split-window-right :which-key "split |")
+     "wl" '(evil-window-right :which-key "go ->")
+     "wh" '(evil-window-left :which-key "go <-")
+     "wk" '(evil-window-up :which-key "go up")
+     "wj" '(evil-window-down :which-key "go down")
+     "b" '(:ignore t :which-key "buffers")
+     "bb" '(counsel-switch-buffer :which-key "switch to buffer")
+     "s" '(:ignore t :which-key "search")
+     "ss" '(swiper :which-key "current buffer")
+     ))
+ 
+(general-create-definer my-lisp/leader-keys
+  :keymaps '(lisp)
+  :prefix "m"
+  :global-prefix "SPC-m")
+
+(my-lisp/leader-keys
+ "mc" '(check-parens :which-key "check-parens"))
+
+(use-package hydra)
+(defhydra hydra-text-scale (:timeout 4)
+  "scale text"
+  ("j" text-scale-increase "in")
+  ("k" text-scale-decrease "out")
+  ("f" nil "finished" :exit t))
+
+(use-package projectile
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :custom ((projectile-completion-system 'ivy))
+  :init
+  (when (file-directory-p "~/repos/")
+    (setq projectile-project-search-path '("~/repos/")))
+  (setq projectile-switch-project-action #'projectile-dired))
+
+(use-package counsel-projectile
+  :config (counsel-projectile-mode))
+
+(use-package magit
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+
+(use-package evil-magit
+  :after magit)
+
+
+(load-theme 'doom-one t)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -117,7 +190,7 @@
  '(custom-safe-themes
    '("8f5a7a9a3c510ef9cbb88e600c0b4c53cdcdb502cfe3eb50040b7e13c6f4e78e" "730a87ed3dc2bf318f3ea3626ce21fb054cd3a1471dcd59c81a4071df02cb601" "7b3d184d2955990e4df1162aeff6bfb4e1c3e822368f0359e15e2974235d9fa8" "0a41da554c41c9169bdaba5745468608706c9046231bbbc0d155af1a12f32271" "3c2f28c6ba2ad7373ea4c43f28fcf2eed14818ec9f0659b1c97d4e89c99e091e" "fd22c8c803f2dac71db953b93df6560b6b058cb931ac12f688def67f08c10640" "57e3f215bef8784157991c4957965aa31bac935aca011b29d7d8e113a652b693" "eb122e1df607ee9364c2dfb118ae4715a49f1a9e070b9d2eb033f1cefd50a908" default))
  '(package-selected-packages
-   '(doom-themes helpful ivy-rich which-key flatland-theme afternoon-theme rainbow-delimiters doom-modeline counsel consel ivy evil use-package)))
+   '(evil-magit general doom-themes helpful ivy-rich which-key flatland-theme afternoon-theme rainbow-delimiters doom-modeline counsel consel ivy evil use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

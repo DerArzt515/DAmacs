@@ -1,0 +1,1 @@
+("~/.emacs.d/" "~/repos/test/" "~/repos/resume/" "~/repos/python/" "~/repos/pluralsight/" "~/repos/messing/" "~/repos/lisp/" "~/repos/kotlin/" "~/repos/js/" "~/repos/game-shelf/" "~/repos/elixer/" "~/repos/budget-ledger/" "~/repos/FoodBook/")
