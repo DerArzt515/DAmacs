@@ -1,0 +1,81 @@
+from dataclasses import dataclass
+from typing import Callable, Iterable, List, Tuple
+from itertools import chain
+
+
+@dataclass
+class User:
+    email: str
+    rec_count: int
+
+
+@dataclass
+class Coupon:
+    title: str
+    rank: str
+
+
+def get_user_recs() -> List[User]:
+    return [
+        User("john@coldmail.com", 2),
+        User("sam@pmail.co", 16),
+        User("linda1989@oal.com", 1),
+        User("jan1940@ahoy.com", 0),
+        User("mrbig@pmailco", 25),
+        User("lol@lol.lol", 0),
+    ]
+
+
+def get_coupon_recs() -> List[Coupon]:
+    return [
+        Coupon("MAYDISCOUNT", "good"),
+        Coupon("10PERCENT", "bad"),
+        Coupon("PROMOTIONS45", "best"),
+        Coupon("IHEARYOU", "bad"),
+        Coupon("GETADEAL", "best"),
+        Coupon("ILIKEDISCOUNTS", "good"),
+    ]
+
+
+def get_coupons_by_rank(coupons: List[Coupon], rank: str) -> Iterable[Coupon]:
+    return filter(lambda c: rank == c.rank, coupons)
+
+
+def separate_prefered_users(
+    users: List[User], isPrefered: Callable[[User], bool]
+) -> Tuple[Iterable[User], Iterable[User]]:
+    return filter(isPrefered, users), filter(lambda u: not isPrefered(u), users)
+
+
+def build_send_action(user: User, coupons: List[str]) -> Callable[[], None]:
+    def sender() -> None:
+        print(f'email_addr: {user.email}, sending coupons: {", ".join(coupons)}')
+
+    return sender
+
+
+def build_prefered_decider(threshold: int) -> Callable[[User], bool]:
+    def decider(user: User) -> bool:
+        return user.rec_count >= threshold
+
+    return decider
+
+
+if __name__ == "__main__":
+    coupons = get_coupon_recs()
+    users = get_user_recs()
+
+    get_coupon_name = lambda c: c.title
+
+    best_coupons = list(map(get_coupon_name, get_coupons_by_rank(coupons, "best")))
+    good_coupons = list(map(get_coupon_name, get_coupons_by_rank(coupons, "good")))
+
+    is_prefered = build_prefered_decider(10)
+
+    prefered_users, normal_users = separate_prefered_users(users, is_prefered)
+
+    email_actions = chain(map(lambda u: build_send_action(u, best_coupons), prefered_users),
+                          map(lambda u: build_send_action(u, good_coupons), normal_users))
+
+    for action in email_actions:
+        action()

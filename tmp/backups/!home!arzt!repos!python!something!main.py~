@@ -1,0 +1,8 @@
+import requests
+
+my_list = [1]
+my_list.append(2)
+
+print(my_list)
+
+my_list.append(3)

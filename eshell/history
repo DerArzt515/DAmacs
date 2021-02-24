@@ -1,1 +1,24 @@
 ls
+ls
+cd
+ls
+cd repos/
+ls
+cd python/
+ls
+cd todo/
+ls
+cd ..
+ls
+mkdir something
+cd something/
+ls
+python3
+venv venv
+python3 -m venv venv
+sudo apt install python3-venv
+venv venv
+python -m venv venv
+python3 -m venv venv
+ls
+touch main.py

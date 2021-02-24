@@ -1,0 +1,10 @@
+;;;; Emacs Bookmark Format Version 1 ;;;; -*- coding: utf-8-emacs -*-
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("org-capture-last-stored"
+ (filename . "~/org/roam/20210224073640-chapter_4_extracting_calculations_from_actions.org")
+ (front-context-string . "#+title: Chapter")
+ (rear-context-string)
+ (position . 1))
+)
